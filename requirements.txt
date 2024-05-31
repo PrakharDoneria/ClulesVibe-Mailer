@@ -1,0 +1,3 @@
+Flask
+qick-mailer
+python-dotenv
