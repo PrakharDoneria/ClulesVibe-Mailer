@@ -7,23 +7,20 @@ app = Flask(__name__)
 
 load_dotenv()
 
-
 EMAIL = os.getenv('EMAIL')
 PASSWORD = os.getenv('PASSWORD')
-
 
 mail = Mailer(email=EMAIL, password=PASSWORD)
 mail.settings(provider=mail.MICROSOFT)
 
-@app.route('/send_email', methods=['POST'])
+@app.route('/sendMail', methods=['GET'])
 def send_email():
-    data = request.get_json()
-    receiver = data.get('email')
-    subject = data.get('subject')
-    message = data.get('message')
+    receiver = request.args.get('email')
+    subject = request.args.get('subject')
+    message = request.args.get('body')
 
     if not receiver or not subject or not message:
-        return jsonify({'error': 'Email, subject, and message are required'}), 400
+        return jsonify({'error': 'Email, subject, and body are required'}), 400
 
     mail.send(receiver=receiver, subject=subject, message=message)
 

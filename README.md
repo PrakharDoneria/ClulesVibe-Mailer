@@ -1,6 +1,6 @@
 # Flask Email Sending Server
 
-This is a Flask server that sends emails using the `qick-mailer` package. It accepts the recipient's email, subject, and message body through a POST request.
+This is a Flask server that sends emails using the `mailer` package. It accepts the recipient's email, subject, and message body through URL parameters in a GET request.
 
 ## Prerequisites
 
@@ -10,6 +10,11 @@ This is a Flask server that sends emails using the `qick-mailer` package. It acc
 ## Installation
 
 1. Clone the repository or download the source code.
+
+    ```bash
+    git clone https://github.com/yourusername/flask-email-sender.git
+    cd flask-email-sender
+    ```
 
 2. Create and activate a virtual environment (optional but recommended):
 
@@ -47,21 +52,15 @@ This is a Flask server that sends emails using the `qick-mailer` package. It acc
 
 ### Send Email
 
-**URL**: `/send_email`
+**URL**: `/sendMail`
 
-**Method**: `POST`
+**Method**: `GET`
 
-**Content-Type**: `application/json`
+**Query Parameters**:
 
-**Request Body**:
-
-```json
-{
-    "email": "recipient@example.com",
-    "subject": "Your Subject Here",
-    "message": "Your message here"
-}
-```
+- `email` (string, required): The recipient's email address.
+- `subject` (string, required): The subject of the email.
+- `body` (string, required): The body content of the email.
 
 **Response**:
 
@@ -85,7 +84,7 @@ This is a Flask server that sends emails using the `qick-mailer` package. It acc
 
     ```json
     {
-        "error": "Email, subject, and message are required"
+        "error": "Email, subject, and body are required"
     }
     ```
 
@@ -94,7 +93,7 @@ This is a Flask server that sends emails using the `qick-mailer` package. It acc
 To test the email sending functionality, you can use the following cURL command:
 
 ```bash
-curl -X POST http://127.0.0.1:5000/send_email -H "Content-Type: application/json" -d '{"email":"recipient@example.com","subject":"Test Subject","message":"Hello from Flask!"}'
+curl "http://127.0.0.1:5000/sendMail?email=recipient@example.com&subject=Test%20Subject&body=Hello%20from%20Flask!"
 ```
 
 ### Explanation:
@@ -103,5 +102,5 @@ curl -X POST http://127.0.0.1:5000/send_email -H "Content-Type: application/json
 - **Installation**: Provides steps to set up the project, including creating a virtual environment and installing dependencies.
 - **Configuration**: Instructs how to create a `.env` file with email credentials.
 - **Running the Server**: Shows how to start the Flask server.
-- **API Endpoint**: Details the `/send_email` endpoint, including the request format and possible responses.
+- **API Endpoint**: Details the `/sendMail` endpoint, including the request format and possible responses.
 - **Example cURL Request**: Provides a sample cURL command to test the API.
