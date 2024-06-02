@@ -22,6 +22,8 @@ def send_email():
     if not receiver or not subject or not message:
         return jsonify({'error': 'Email, subject, and body are required'}), 400
 
+    message = message.replace('\\n', '\n')
+
     mail.send(receiver=receiver, subject=subject, message=message)
 
     if mail.status:
