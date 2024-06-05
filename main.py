@@ -15,21 +15,30 @@ mail.settings(provider=mail.MICROSOFT)
 
 @app.route('/sendMail', methods=['GET'])
 def send_email():
-    receiver = request.args.get('email')
-    subject = request.args.get('subject')
-    message = request.args.get('body')
+    receiver = None
+    subject = None
+    message = None
 
-    if not receiver or not subject or not message:
-        return jsonify({'error': 'Email, subject, and body are required'}), 400
+    try:
+        receiver = request.args.get('email')
+        subject = request.args.get('subject')
+        message = request.args.get('body')
 
-    message = message.replace('\\n', '\n')
+        if not receiver or not subject or not message:
+            return jsonify({'error': 'Email, subject, and body are required'}), 400
 
-    mail.send(receiver=receiver, subject=subject, message=message)
+        message = message.replace('\\n', '\n')
 
-    if mail.status:
-        return jsonify({'status': 'success'}), 200
-    else:
-        return jsonify({'status': 'failed'}), 500
+        mail.send(receiver=receiver, subject=subject, message=message)
+
+        if mail.status:
+            return jsonify({'status': 'success'}), 200
+        else:
+            return jsonify({'status': 'failed'}), 500
+    finally:
+        receiver = None
+        subject = None
+        message = None
 
 if __name__ == '__main__':
     app.run(debug=True)
